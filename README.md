@@ -1,4 +1,4 @@
-<center><img src="./src/assets/logo-package/png/logo-white.png" alt="webCite" width="200"/></center>
+<img src="./src/assets/logo-package/png/logo-white.png" alt="webCite" width="200"/>
 
 # webCite
 

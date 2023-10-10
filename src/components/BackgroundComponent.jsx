@@ -10,10 +10,7 @@ const user = {
 };
 const navigation = [
     { name: "Dashboard", href: "#", current: true },
-    { name: "Team", href: "#", current: false },
-    { name: "Projects", href: "#", current: false },
-    { name: "Calendar", href: "#", current: false },
-    { name: "Reports", href: "#", current: false },
+    { name: "Citation List", href: "#", current: false }
 ];
 const userNavigation = [
     { name: "Your Profile", href: "#" },
@@ -28,14 +25,6 @@ function classNames(...classes) {
 export default function BackgroundComponent() {
     return (
         <>
-            {/*
-        This example requires updating your template:
-
-        ```
-        <html class="h-full bg-gray-100">
-        <body class="h-full">
-        ```
-      */}
             <div className="min-h-full">
                 <Disclosure as="nav" className="bg-gray-800">
                     {({ open }) => (
@@ -44,11 +33,7 @@ export default function BackgroundComponent() {
                                 <div className="flex h-16 items-center justify-between">
                                     <div className="flex items-center">
                                         <div className="flex-shrink-0">
-                                            <img
-                                                className="h-8 w-8"
-                                                src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
-                                                alt="Your Company"
-                                            />
+                                            <img className="h-8 w-8" src="../assets/logo-package/png/logo-no-background.png" alt="Your Company" />
                                         </div>
                                         <div className="hidden md:block">
                                             <div className="ml-10 flex items-baseline space-x-4">
@@ -72,15 +57,6 @@ export default function BackgroundComponent() {
                                     </div>
                                     <div className="hidden md:block">
                                         <div className="ml-4 flex items-center md:ml-6">
-                                            <button
-                                                type="button"
-                                                className="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
-                                            >
-                                                <span className="absolute -inset-1.5" />
-                                                <span className="sr-only">View notifications</span>
-                                                <BellIcon className="h-6 w-6" aria-hidden="true" />
-                                            </button>
-
                                             {/* Profile dropdown */}
                                             <Menu as="div" className="relative ml-3">
                                                 <div>
@@ -161,14 +137,6 @@ export default function BackgroundComponent() {
                                             <div className="text-base font-medium leading-none text-white">{user.name}</div>
                                             <div className="text-sm font-medium leading-none text-gray-400">{user.email}</div>
                                         </div>
-                                        <button
-                                            type="button"
-                                            className="relative ml-auto flex-shrink-0 rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
-                                        >
-                                            <span className="absolute -inset-1.5" />
-                                            <span className="sr-only">View notifications</span>
-                                            <BellIcon className="h-6 w-6" aria-hidden="true" />
-                                        </button>
                                     </div>
                                     <div className="mt-3 space-y-1 px-2">
                                         {userNavigation.map((item) => (

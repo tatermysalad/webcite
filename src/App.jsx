@@ -1,14 +1,13 @@
 import "./App.css";
-import NavigationBar from "./components/NavigationBar";
-import SlideOver from "./components/BackgroundComponent";
+import BackgroundComponent from "./components/BackgroundComponent";
+import SearchComponent from "./components/SearchComponent";
 
 function App() {
     return (
         <>
-            
-                <NavigationBar />
-                <h1 className="text-4xl font-bold underline">Hello world!</h1>
-            
+            <BackgroundComponent></BackgroundComponent>
+
+            <SearchComponent> </SearchComponent>
         </>
     );
 }
