@@ -6,8 +6,6 @@ import StackedList from "./components/StackedListComponent";
 function App() {
     return (
         <>
-            <BackgroundComponent />
-            <SearchComponent />
             <StackedList />
         </>
     );
