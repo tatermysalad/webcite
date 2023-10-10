@@ -1,87 +1,94 @@
-const people = [
+import React, { useState } from "react";
+
+const references = [
     {
-        name: "Leslie Alexander",
-        email: "leslie.alexander@example.com",
-        role: "Co-Founder / CEO",
-        imageUrl:
-            "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-        lastSeen: "3h ago",
-        lastSeenDateTime: "2023-01-23T13:23Z",
+        author: "Author 1",
+        title: "Title of Reference 1",
+        publishDate: "2023-10-10",
+        publisher: "Publisher 1",
+        url: "website.com",
+        imageUrl: "/src/assets/icons/book.png",
     },
     {
-        name: "Michael Foster",
-        email: "michael.foster@example.com",
-        role: "Co-Founder / CTO",
-        imageUrl:
-            "https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-        lastSeen: "3h ago",
-        lastSeenDateTime: "2023-01-23T13:23Z",
+        author: "Author 2",
+        title: "Title of Reference 2",
+        publishDate: "2023-10-11",
+        publisher: "Publisher 2",
+        url: "website.com",
+        imageUrl: "/src/assets/icons/paper.png",
     },
     {
-        name: "Dries Vincent",
-        email: "dries.vincent@example.com",
-        role: "Business Relations",
-        imageUrl:
-            "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-        lastSeen: null,
+        author: "Author 3",
+        title: "Title of Reference 1",
+        publishDate: "2023-10-10",
+        publisher: "Publisher 1",
+        url: "website.com",
+        imageUrl: "/src/assets/icons/book.png",
     },
     {
-        name: "Lindsay Walton",
-        email: "lindsay.walton@example.com",
-        role: "Front-end Developer",
-        imageUrl:
-            "https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-        lastSeen: "3h ago",
-        lastSeenDateTime: "2023-01-23T13:23Z",
-    },
-    {
-        name: "Courtney Henry",
-        email: "courtney.henry@example.com",
-        role: "Designer",
-        imageUrl:
-            "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-        lastSeen: "3h ago",
-        lastSeenDateTime: "2023-01-23T13:23Z",
-    },
-    {
-        name: "Tom Cook",
-        email: "tom.cook@example.com",
-        role: "Director of Product",
-        imageUrl:
-            "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-        lastSeen: null,
+        author: "Author 4",
+        title: "Title of Reference 2",
+        publishDate: "2023-10-11",
+        publisher: "Publisher 2",
+        url: "website.com",
+        imageUrl: "/src/assets/icons/website.png",
     },
 ];
 
 export default function StackedList() {
+    const [copiedItems, setCopiedItems] = useState(Array(references.length).fill(false));
+
+    const handleCopyClick = (index) => {
+        navigator.clipboard.writeText(JSON.stringify(references[index], null, 4));
+        setCopiedItems((prevCopiedItems) => {
+            const updatedCopiedItems = [...prevCopiedItems];
+            updatedCopiedItems[index] = true;
+            return updatedCopiedItems;
+        });
+    };
+
+    const handleCopyAllClick = () => {
+        const allItemsText = JSON.stringify(references, null, 4);
+        navigator.clipboard.writeText(allItemsText);
+        setCopiedItems(Array(references.length).fill(true));
+    };
+
     return (
-        <ul role="list" className="divide-y divide-gray-100">
-            {people.map((person) => (
-                <li key={person.email} className="flex justify-between gap-x-6 py-5">
-                    <div className="flex min-w-0 gap-x-4">
-                        <img className="h-12 w-12 flex-none rounded-full bg-gray-50" src={person.imageUrl} alt="" />
-                        <div className="min-w-0 flex-auto">
-                            <p className="text-sm font-semibold leading-6 text-gray-900">{person.name}</p>
-                            <p className="mt-1 truncate text-xs leading-5 text-gray-500">{person.email}</p>
-                        </div>
-                    </div>
-                    <div className="hidden shrink-0 sm:flex sm:flex-col sm:items-end">
-                        <p className="text-sm leading-6 text-gray-900">{person.role}</p>
-                        {person.lastSeen ? (
-                            <p className="mt-1 text-xs leading-5 text-gray-500">
-                                Last seen <time dateTime={person.lastSeenDateTime}>{person.lastSeen}</time>
-                            </p>
-                        ) : (
-                            <div className="mt-1 flex items-center gap-x-1.5">
-                                <div className="flex-none rounded-full bg-emerald-500/20 p-1">
-                                    <div className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+        <div id="stackedList">
+            <div className="flex items-center justify-center">
+                <ul role="list" className="divide-y divide-gray-100">
+                    {references.map((reference, index) => (
+                        <li key={index} className="flex flex-wrap justify-between gap-x-6 py-5">
+                            <div className="flex min-w-0 gap-x-4 items-center">
+                                <img className="h-12 w-12 flex-none rounded-lg" src={reference.imageUrl} alt={reference.name} />
+                                <div className="min-w-0 flex-auto">
+                                    <p className="mt-1 text-xs font-semibold text-gray-900">{`Title: ${reference.title}`}</p>
+                                    <p className="mt-1 text-xs text-gray-500">{`Author/ Publisher: ${reference.author} / ${reference.publisher}`}</p>
+                                    <p className="mt-1 text-xs text-gray-500">{`Access from / URL: ${reference.url}`}</p>
+                                    <p className="mt-1 text-xs text-gray-500">{`Published: ${reference.publishDate}`}</p>
+                                    <button
+                                        onClick={() => handleCopyClick(index)}
+                                        className={`mt-2 px-2 py-1 text-xs font-medium text-white bg-purple-500 rounded-md focus:outline-none hover:bg-purple-600 ${
+                                            copiedItems[index] ? "cursor-not-allowed" : "cursor-pointer"
+                                        }`}
+                                        disabled={copiedItems[index]}
+                                    >
+                                        {copiedItems[index] ? "Copied" : "Copy"}
+                                    </button>
                                 </div>
-                                <p className="text-xs leading-5 text-gray-500">Online</p>
                             </div>
-                        )}
-                    </div>
-                </li>
-            ))}
-        </ul>
+                        </li>
+                    ))}
+                </ul>
+            </div>
+            <div className="text-center mt-4">
+                <button
+                    onClick={handleCopyAllClick}
+                    className="px-4 py-2 text-sm font-medium text-white bg-purple-500 rounded-md focus:outline-none hover:bg-purple-600"
+                >
+                    Copy All
+                </button>
+            </div>
+        </div>
     );
 }

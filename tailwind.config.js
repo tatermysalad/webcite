@@ -9,6 +9,9 @@ export default {
                 sans: ["Inter var", ...defaultTheme.fontFamily.sans],
             },
         },
+        container: {
+            center:true
+        }
     },
     plugins: ["@tailwindcss/forms"],
 };
