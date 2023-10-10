@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 const references = [
     {
@@ -36,6 +36,23 @@ const references = [
 ];
 
 export default function StackedList() {
+    const [copiedItems, setCopiedItems] = useState(Array(references.length).fill(false));
+
+    const handleCopyClick = (index) => {
+        navigator.clipboard.writeText(JSON.stringify(references[index], null, 4));
+        setCopiedItems((prevCopiedItems) => {
+            const updatedCopiedItems = [...prevCopiedItems];
+            updatedCopiedItems[index] = true;
+            return updatedCopiedItems;
+        });
+    };
+
+    const handleCopyAllClick = () => {
+        const allItemsText = JSON.stringify(references, null, 4);
+        navigator.clipboard.writeText(allItemsText);
+        setCopiedItems(Array(references.length).fill(true));
+    };
+
     return (
         <div id="stackedList">
             <div className="flex items-center justify-center">
@@ -49,11 +66,28 @@ export default function StackedList() {
                                     <p className="mt-1 text-xs text-gray-500">{`Author/ Publisher: ${reference.author} / ${reference.publisher}`}</p>
                                     <p className="mt-1 text-xs text-gray-500">{`Access from / URL: ${reference.url}`}</p>
                                     <p className="mt-1 text-xs text-gray-500">{`Published: ${reference.publishDate}`}</p>
+                                    <button
+                                        onClick={() => handleCopyClick(index)}
+                                        className={`mt-2 px-2 py-1 text-xs font-medium text-white bg-purple-500 rounded-md focus:outline-none hover:bg-purple-600 ${
+                                            copiedItems[index] ? "cursor-not-allowed" : "cursor-pointer"
+                                        }`}
+                                        disabled={copiedItems[index]}
+                                    >
+                                        {copiedItems[index] ? "Copied" : "Copy"}
+                                    </button>
                                 </div>
                             </div>
                         </li>
                     ))}
                 </ul>
+            </div>
+            <div className="text-center mt-4">
+                <button
+                    onClick={handleCopyAllClick}
+                    className="px-4 py-2 text-sm font-medium text-white bg-purple-500 rounded-md focus:outline-none hover:bg-purple-600"
+                >
+                    Copy All
+                </button>
             </div>
         </div>
     );

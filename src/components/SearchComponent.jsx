@@ -47,7 +47,7 @@ export default function SearchComponent() {
             <form className="flex items-center justify-center">
                 <div className="space-y-12 w-3/6 h-auto content-center">
                     <div className="border-b border-gray-900/10 pb-12">
-                        <h2 className="text-base font-semibold leading-7 text-gray-900">Search</h2>
+                        <h2 className="text-base font-semibold leading-7 text-gray-900">Top Result</h2>
                         <p className="mt-1 text-sm leading-6 text-gray-600"></p>
 
                         <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-1">
