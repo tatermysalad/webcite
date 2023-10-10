@@ -1,13 +1,14 @@
 import "./App.css";
 import BackgroundComponent from "./components/BackgroundComponent";
 import SearchComponent from "./components/SearchComponent";
+import StackedList from "./components/StackedListComponent";
 
 function App() {
     return (
         <>
-            <BackgroundComponent></BackgroundComponent>
-
-            <SearchComponent> </SearchComponent>
+            <BackgroundComponent />
+            <SearchComponent />
+            <StackedList />
         </>
     );
 }

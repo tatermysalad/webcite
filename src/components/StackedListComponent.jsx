@@ -53,7 +53,7 @@ const people = [
     },
 ];
 
-export default function Example() {
+export default function StackedList() {
     return (
         <ul role="list" className="divide-y divide-gray-100">
             {people.map((person) => (
