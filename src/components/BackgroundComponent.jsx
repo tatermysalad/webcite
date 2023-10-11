@@ -1,6 +1,7 @@
 import { Fragment } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
-import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
+import icon from "/src/assets/logo-package/png/logo-no-background.png";
 
 const user = {
     name: "Tom Cook",
@@ -33,7 +34,7 @@ export default function BackgroundComponent({ children }) {
                                 <div className="flex h-16 items-center justify-between">
                                     <div className="flex items-center">
                                         <div className="flex-shrink-0">
-                                            <img className="h-14 w-15" src="/src/assets/logo-package/png/logo-no-background.png" alt="Your Company" />
+                                            <img className="h-14 w-15" src={icon} alt="Your Company" />
                                         </div>
                                         <div className="hidden md:block">
                                             <div className="ml-10 flex items-baseline space-x-4">

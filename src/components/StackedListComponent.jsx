@@ -1,4 +1,7 @@
-import React, { useState } from "react";
+import { useState } from "react";
+import bookIcon from "../assets/icons/book.png"
+import paperIcon from "../assets/icons/paper.png"
+import websiteIcon from "../assets/icons/website.png"
 
 const references = [
     {
@@ -7,7 +10,7 @@ const references = [
         publishDate: "2023-10-10",
         publisher: "Publisher 1",
         url: "website.com",
-        imageUrl: "/src/assets/icons/book.png",
+        imageUrl: bookIcon,
     },
     {
         author: "Author 2",
@@ -15,7 +18,7 @@ const references = [
         publishDate: "2023-10-11",
         publisher: "Publisher 2",
         url: "website.com",
-        imageUrl: "/src/assets/icons/paper.png",
+        imageUrl: paperIcon,
     },
     {
         author: "Author 3",
@@ -23,7 +26,7 @@ const references = [
         publishDate: "2023-10-10",
         publisher: "Publisher 1",
         url: "website.com",
-        imageUrl: "/src/assets/icons/book.png",
+        imageUrl: bookIcon,
     },
     {
         author: "Author 4",
@@ -31,7 +34,7 @@ const references = [
         publishDate: "2023-10-11",
         publisher: "Publisher 2",
         url: "website.com",
-        imageUrl: "/src/assets/icons/website.png",
+        imageUrl: websiteIcon,
     },
 ];
 
