@@ -1,29 +1,25 @@
-import { Fragment } from "react";
-import { Disclosure, Menu, Transition } from "@headlessui/react";
+import { Disclosure } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import icon from "/src/assets/logo-package/png/logo-no-background.png";
+import { useLocation, useNavigate } from "react-router-dom";
 
-const user = {
-    name: "Tom Cook",
-    email: "tom@example.com",
-    imageUrl:
-        "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-};
-const navigation = [
-    { name: "Dashboard", href: "/", current: true },
-    { name: "Citation List", href: "/search", current: false },
-];
-const userNavigation = [
-    { name: "Your Profile", href: "#" },
-    { name: "Settings", href: "#" },
-    { name: "Sign out", href: "#" },
-];
+
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(" ");
 }
 
 export default function BackgroundComponent({ children }) {
+    const location = useLocation();
+    const navigate = useNavigate();
+
+    const isDashboard = location.pathname === "/";
+    const isCitationList = location.pathname === "/search";
+
+    const navigation = [
+        { name: "Dashboard", href: "/", current: isDashboard },
+        { name: "Citation List", href: "/search", current: isCitationList },
+    ];
     return (
         <>
             <div className="min-h-full">
@@ -41,7 +37,7 @@ export default function BackgroundComponent({ children }) {
                                                 {navigation.map((item) => (
                                                     <a
                                                         key={item.name}
-                                                        href={item.href}
+                                                        onClick={() => navigate(item.href)}
                                                         className={classNames(
                                                             item.current
                                                                 ? "bg-teal-700 text-purple-500"
@@ -56,7 +52,7 @@ export default function BackgroundComponent({ children }) {
                                             </div>
                                         </div>
                                     </div>
-                                    
+
                                     <div className="-mr-2 flex md:hidden">
                                         {/* Mobile menu button */}
                                         <Disclosure.Button className="relative inline-flex items-center justify-center rounded-md bg-teal-500 p-2 text-gray-100 hover:bg-teal-700 hover:text-purple-100 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-teal-500">
@@ -71,14 +67,13 @@ export default function BackgroundComponent({ children }) {
                                     </div>
                                 </div>
                             </div>
-
                             <Disclosure.Panel className="md:hidden">
                                 <div className="space-y-1 px-2 pb-3 pt-2 sm:px-3">
                                     {navigation.map((item) => (
                                         <Disclosure.Button
                                             key={item.name}
                                             as="a"
-                                            href={item.href}
+                                            onClick={() => navigate(item.href)}
                                             className={classNames(
                                                 item.current
                                                     ? "bg-teal-700 text-purple-100"
@@ -95,7 +90,6 @@ export default function BackgroundComponent({ children }) {
                         </>
                     )}
                 </Disclosure>
-
                 <header className="bg-white shadow">
                     <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
                         <h1 className="text-3xl font-bold tracking-tight text-gray-900">webCite</h1>
