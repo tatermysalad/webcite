@@ -3,6 +3,7 @@ import { ApiContext } from "../contexts/ApiContext";
 import useLocalStorage from "../hooks/useLocalStorage";
 
 export default function SearchComponent() {
+    // eslint-disable-next-line no-unused-vars
     const { websiteApi, setWebsiteApi, researchApi, setResearchApi, bookApi, setBookApi } = useContext(ApiContext);
 
     const [localStorage, setLocalStorage] = useLocalStorage("References", []);
@@ -185,7 +186,9 @@ export default function SearchComponent() {
                                 )}
                                 {formData.source === "Book" && searchResults.data && (
                                     <ul>
-                                        {searchResults.data.slice(0, 5).map((book, index) => (
+                                        
+                                        {// eslint-disable-next-line no-unused-vars
+                                            searchResults.data.slice(0, 5).map((book, index) => (
                                             <li key={book.key}>
                                                 <strong>Title:</strong> {book.title}
                                                 <br />
