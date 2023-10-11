@@ -183,7 +183,7 @@ export default function SearchComponent() {
                                         ))}
                                     </ul>
                                 )}
-                                {formData.source === "Book" && (
+                                {formData.source === "Book" && searchResults.data && (
                                     <ul>
                                         {searchResults.data.slice(0, 5).map((book, index) => (
                                             <li key={book.key}>

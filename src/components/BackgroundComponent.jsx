@@ -1,17 +1,25 @@
 import { Disclosure } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import icon from "/src/assets/logo-package/png/logo-no-background.png";
+import { useLocation, useNavigate } from "react-router-dom";
 
-const navigation = [
-    { name: "Dashboard", href: "/", current: true },
-    { name: "Citation List", href: "/search", current: false },
-];
+
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(" ");
 }
 
 export default function BackgroundComponent({ children }) {
+    const location = useLocation();
+    const navigate = useNavigate();
+
+    const isDashboard = location.pathname === "/";
+    const isCitationList = location.pathname === "/search";
+
+    const navigation = [
+        { name: "Dashboard", href: "/", current: isDashboard },
+        { name: "Citation List", href: "/search", current: isCitationList },
+    ];
     return (
         <>
             <div className="min-h-full">
@@ -29,7 +37,7 @@ export default function BackgroundComponent({ children }) {
                                                 {navigation.map((item) => (
                                                     <a
                                                         key={item.name}
-                                                        href={item.href}
+                                                        onClick={() => navigate(item.href)}
                                                         className={classNames(
                                                             item.current
                                                                 ? "bg-teal-700 text-purple-500"
@@ -65,7 +73,7 @@ export default function BackgroundComponent({ children }) {
                                         <Disclosure.Button
                                             key={item.name}
                                             as="a"
-                                            href={item.href}
+                                            onClick={() => navigate(item.href)}
                                             className={classNames(
                                                 item.current
                                                     ? "bg-teal-700 text-purple-100"

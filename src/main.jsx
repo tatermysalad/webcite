@@ -10,15 +10,14 @@ import BackgroundComponent from "./components/BackgroundComponent.jsx";
 ReactDOM.createRoot(document.getElementById("root")).render(
     <React.StrictMode>
         <ApiProvider>
-            <BackgroundComponent>
-                <BrowserRouter>
+            <BrowserRouter>
+                <BackgroundComponent>
                     <Routes>
                         <Route path="/" element={<App />}></Route>
                         <Route path="/search" element={<SearchPage />}></Route>
                     </Routes>
-                </BrowserRouter>
-            </BackgroundComponent>
-            
+                </BackgroundComponent>
+            </BrowserRouter>
         </ApiProvider>
     </React.StrictMode>
 );
