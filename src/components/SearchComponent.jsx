@@ -19,7 +19,6 @@ export default function SearchComponent() {
     const [searchFilter, setSearchFilter] = useState("title");
 
     const [loading, setLoading] = useState(false);
-    const [selectedBook, setSelectedBook] = useState(null);
 
     const [formData, setFormData] = useState({
         title: "",
