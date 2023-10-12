@@ -118,8 +118,20 @@ export default function SearchComponent() {
                 source: selectedReferenceType,
             });
             console.log(formData)
-        } else if (selectedReferenceType === "Book" && searchResult && typeof searchResult.title === "string") {
-            console.log("hi");
+        } else if (selectedReferenceType === "Book" && searchResults) {
+            const result = searchResults[0];
+            console.log(result);
+            setFormData({
+                title: result["title"],
+                authorLast: result["author_name"][0].split(" ").pop(),
+                authorFirst: result["author_name"][0].split(" ")[0],
+                authorInitial: "",
+                websiteAddress: result["url"],
+                publisher: result["publisher"][0],
+                year: result["first_publish_year"],
+                source: selectedReferenceType,
+            });
+            console.log(formData);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [searchResults]);
