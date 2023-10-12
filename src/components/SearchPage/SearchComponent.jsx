@@ -164,11 +164,11 @@ export default function SearchComponent() {
             <form className="flex items-center justify-center">
                 <div className="w-1/2">
                     <div className="border-b border-gray-200 pb-8">
-                        <h2 className="text-lg font-semibold text-gray-900">Search for Reference</h2>
+                        <h2 className="text-lg font-semibold text-gray-900">Let me cite that for you:</h2>
                         <div>
                             <div className="mt-4">
                                 <label htmlFor="referenceType" className="block text-sm font-medium leading-6 text-gray-900">
-                                    Reference Type
+                                    What is your reference type?
                                 </label>
                                 <select
                                     id="referenceType"
@@ -184,7 +184,7 @@ export default function SearchComponent() {
                             </div>
                             <div className="mt-4">
                                 <label htmlFor="searchQuery" className="block text-sm font-medium leading-6 text-gray-900">
-                                    Search for your reference here:
+                                   { selectedReferenceType === "Website" ? "Enter the URL of the website you used here" : "Enter your search term here"}
                                 </label>
                                 <div className="mt-4 flex items-center">
                                     {selectedReferenceType === "Book" && (
@@ -225,7 +225,7 @@ export default function SearchComponent() {
             <form className="flex items-center justify-center">
                 <div className="space-y-12 w-3/5 h-auto content-center">
                     <div className="border-b border-gray-900/10 pb-12">
-                        <h2 className="m-2 text-base font-semibold leading-7 text-gray-900">Top Result</h2>
+                        <h2 className="m-2 text-base font-semibold leading-7 text-gray-900">Reference</h2>
                         <div className="grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-1">
                             <div className="">
                                 <label htmlFor="authorFirst" className="block text-sm font-medium leading-6 text-gray-900">

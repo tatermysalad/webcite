@@ -19,7 +19,7 @@ export default function BackgroundComponent({ children }) {
 
     const navigation = [
         { name: "Citation List", href: "/", current: isDashboard },
-        { name: "Search and Add", href: "/search", current: isCitationList },
+        { name: "Find and Generate", href: "/search", current: isCitationList },
     ];
     return (
         <>
