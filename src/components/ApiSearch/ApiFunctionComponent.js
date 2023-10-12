@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { ApiContext } from "../contexts/ApiContext";
+import { ApiContext } from "../../contexts/ApiContext";
 
 export default function useApiSearch() {
     const { websiteApi, researchApi, bookApi } = useContext(ApiContext);
@@ -20,7 +20,9 @@ export default function useApiSearch() {
         return responseData;
     };
     const searchResearchPaper = async (searchQuery) => {
-        const apiUrl = `${researchApi}search/bulk?query=`;
+        const extraQuery = "?fields=title,url,authors,year,venue,citationStyles,journal&limit=1";
+
+        const apiUrl = `${researchApi}search${extraQuery}&query=`;
         const requestOptions = {
             method: "GET",
             mode: "cors",
@@ -33,7 +35,7 @@ export default function useApiSearch() {
 
     // Function to search for a Book reference
     const searchBook = async (searchQuery, searchFilter) => {
-        const extraQuery = "?limit=3&fields=title,publisher,isbn,publish_year";
+        const extraQuery = "?limit=1&fields=title,publisher,first_publish_year,author_name";
         let apiUrl = `${bookApi}search.json${extraQuery}&q=`;
         if (searchFilter === "title") {
             apiUrl = `${bookApi}search.json${extraQuery}&title=`;

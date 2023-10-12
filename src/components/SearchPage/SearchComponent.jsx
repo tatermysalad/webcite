@@ -1,10 +1,10 @@
 import { useContext, useEffect, useState } from "react";
-import { ApiContext } from "../contexts/ApiContext";
-import useLocalStorage from "../hooks/useLocalStorage";
-import useApiSearch from "./ApiFunctionComponent";
-import WebsiteComponent from "./ApiDisplay/WebsiteComponent";
-import ResearchPaperComponent from "./ApiDisplay/ResearchPaperComponent";
-import BookComponent from "./ApiDisplay/BookComponent";
+import { ApiContext } from "../../contexts/ApiContext";
+import useLocalStorage from "../../hooks/useLocalStorage";
+import useApiSearch from "../ApiSearch/ApiFunctionComponent";
+import WebsiteComponent from "../ApiDisplay/WebsiteComponent";
+import ResearchPaperComponent from "../ApiDisplay/ResearchPaperComponent";
+import BookComponent from "../ApiDisplay/BookComponent";
 
 export default function SearchComponent() {
     // eslint-disable-next-line no-unused-vars
@@ -15,10 +15,11 @@ export default function SearchComponent() {
 
     const [selectedReferenceType, setSelectedReferenceType] = useState("Website");
     const [searchQuery, setSearchQuery] = useState("");
-    // if api returns multiple and requires processing
-    const [searchResults, setSearchResults] = useState([]);
+
     // if api returns one result
     const [searchResult, setSearchResult] = useState([]);
+    // if api returns multiple and requires processing
+    const [searchResults, setSearchResults] = useState([]);
 
     const [searchFilter, setSearchFilter] = useState("title");
 
@@ -32,7 +33,6 @@ export default function SearchComponent() {
         websiteAddress: "",
         publisher: "",
         year: "",
-        isbn: "",
         source: selectedReferenceType,
     });
 
@@ -64,16 +64,17 @@ export default function SearchComponent() {
         if (searchQuery !== "") {
             if (selectedReferenceType === "Book") {
                 let responseData = await searchBook(searchQuery);
-                console.log(`relevant data is loaded:`);
+                console.log(`book data is loaded:`);
                 console.log(responseData.docs);
                 setSearchResults(responseData.docs);
             } else if (selectedReferenceType === "Research Paper") {
                 let responseData = await searchResearchPaper(searchQuery);
-                console.log(`relevant data is loaded:`);
+                console.log(`research paper data is loaded:`);
                 console.log(responseData.data.slice(0, 3));
                 setSearchResults(responseData.data.slice(0, 3));
             } else if (selectedReferenceType === "Website") {
                 let responseData = await searchWebsite(searchQuery, searchFilter);
+                console.log(`website data is loaded:`);
                 console.log(responseData);
                 setSearchResult(responseData);
             }
@@ -84,52 +85,48 @@ export default function SearchComponent() {
     };
 
     useEffect(() => {
-        console.log(`trying`);
-        const { title, authorLast, authorFirst, authorInitial, url, publisher, year, isbn } = searchResults;
-        setFormData({
-            title: title,
-            authorLast: authorLast,
-            authorFirst: authorFirst,
-            authorInitial: authorInitial,
-            websiteAddress: url,
-            publisher: publisher,
-            year: year,
-            isbn: isbn,
-            source: selectedReferenceType,
-        });
+        console.log(`trying to load data`);
+        if (selectedReferenceType === "Website" && searchResult && typeof searchResult.title === "string") {
+            const titleParts = searchResult.title.split("|");
+            setFormData({
+                title: titleParts[0] || "",
+                authorLast: "",
+                authorFirst: "",
+                authorInitial: "",
+                websiteAddress: searchResult.url || "",
+                publisher: titleParts.length > 1 ? titleParts[1].trim() : "",
+                year: "",
+                source: selectedReferenceType,
+            });
+        }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [searchResult]);
 
-    // useEffect(() => {
-    //     console.log(`trying to split multiple`);
-
-    //     setFormData({
-    //         title: title,
-    //         author: author,
-    //         websiteAddress: url,
-    //         publisher: publisher,
-    //         year: year,
-    //         isbn: isbn,
-    //         source: selectedReferenceType,
-    //     });
-    //     // eslint-disable-next-line react-hooks/exhaustive-deps
-    // }, [searchResults]);
+    useEffect(() => {
+        console.log(`trying to load data`);
+        if (selectedReferenceType === "Research Paper" && searchResults && typeof searchResults.title === "string") {
+            const result = searchResults[0]
+            setFormData({
+                title: result["title"],
+                authorLast: result["authors"][0]["name"].pop(),
+                authorFirst: result["authors"][0]["name"].split(" ")[0][0],
+                authorInitial: "",
+                websiteAddress: result["url"],
+                publisher: result["journal"]["name"],
+                year: result["year"],
+                source: selectedReferenceType,
+            });
+            console.log(formData)
+        } else if (selectedReferenceType === "Book" && searchResult && typeof searchResult.title === "string") {
+            console.log("hi");
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [searchResults]);
 
     useEffect(() => {
         formData["source"] = selectedReferenceType;
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectedReferenceType]);
-
-    // const handleBookSelect = (book) => {
-    //     setSelectedBook(book);
-    //     setFormData({
-    //         title: book.title,
-    //         author: book.author,
-    //         publisher: book.publisher,
-    //         year: book.publish_year[0],
-    //         source: selectedReferenceType,
-    //     });
-    // };
 
     const handleSave = () => {
         addObject(formData);

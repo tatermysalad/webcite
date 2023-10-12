@@ -1,7 +1,5 @@
 import "./App.css";
-import BackgroundComponent from "./components/BackgroundComponent";
-import SearchComponent from "./components/SearchComponent";
-import StackedList from "./components/StackedListComponent";
+import StackedList from "./components/HomePage/StackedListComponent";
 
 function App() {
     return (

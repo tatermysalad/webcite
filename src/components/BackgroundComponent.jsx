@@ -18,8 +18,8 @@ export default function BackgroundComponent({ children }) {
     const isCitationList = location.pathname === "/search";
 
     const navigation = [
-        { name: "Dashboard", href: "/", current: isDashboard },
-        { name: "Citation List", href: "/search", current: isCitationList },
+        { name: "Citation List", href: "/", current: isDashboard },
+        { name: "Search and Add", href: "/search", current: isCitationList },
     ];
     return (
         <>

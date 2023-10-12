@@ -1,8 +1,9 @@
 /* eslint-disable react/prop-types */
 import { useState } from "react";
-import bookIcon from "../assets/icons/book.png";
-import paperIcon from "../assets/icons/paper.png";
-import websiteIcon from "../assets/icons/website.png";
+import bookIcon from "../../assets/icons/book.png";
+import paperIcon from "../../assets/icons/paper.png";
+import websiteIcon from "../../assets/icons/website.png";
+
 
 export default function ReferencesComponent({ references, selectedStyle }) {
     const [copiedItems, setCopiedItems] = useState(Array(references.length).fill(false));
@@ -46,13 +47,13 @@ export default function ReferencesComponent({ references, selectedStyle }) {
     };
     const renderReferencingInfo = (reference) => {
         switch (selectedStyle) {
-            case "Harvard":
+            case "Chicago":
                 return (
-                    /* Smith, J. A. (2021). The Handbook of Writing: A Comprehensive Guide. Academic Publishers. */
+                    /* Last Name, Initials. <i>Title</i>. Publisher. Year. */
                     <>
                         <p className="mx-0.5 mt-1 text-xs text-gray-800">
-                            {reference.authorLast}, {reference.authorFirst[0]}. {reference.authorInitial} {`(${reference.year}).`} {reference.title}.{" "}
-                            {reference.publisher}. <i>Accessed from:</i> {reference.websiteAddress}
+                            {reference.authorLast}, {reference.authorFirst[0]}. {reference.authorInitial} <i>{reference.title}</i>.{" "}
+                            {reference.publisher}. {reference.year}. {reference.websiteAddress}
                         </p>
                     </>
                 );

@@ -2,25 +2,25 @@
 export default function ReferenceExampleComponent({ selectedStyle }) {
     return (
         <>
-            {selectedStyle === "Harvard" && (
+            {selectedStyle === "Chicago" && (
                 <div className="w-3/4">
                     <span>
                         <strong>Example:</strong>
                     </span>
                     <p>
-                        Last Name, Initials. (Year). <i>Title</i>. Publisher.
+                        Last Name, Initials. <i>Title</i>. Publisher. Year.
                     </p>
                     <br />
                     <span>
                         <strong>In-Text Citation:</strong>
                     </span>
-                    <p>(Author Last Name, Year)</p>
+                    <p>^1.</p>
                     <br />
                     <span>
                         <strong>Reference Entry:</strong>
                     </span>
                     <p>
-                        Smith, J. A. (2021). <i>The Handbook of Writing: A Comprehensive Guide</i>. Academic Publishers.
+                        1. Smith, J. A. <i>The Handbook of Writing: A Comprehensive Guide</i>. Academic Publishers. (2021).
                     </p>
                 </div>
             )}

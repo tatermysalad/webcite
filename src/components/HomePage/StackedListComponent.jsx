@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
 import ReferencesComponent from "./ReferencesComponent";
-import ReferenceExampleComponent from "./ReferenceExampleComponent";
+import ReferenceExampleComponent from "../SearchPage/ReferenceExampleComponent";
 
 export default function StackedList() {
     // const [localStorage, setLocalStorage] = useLocalStorage("References", null);
     const [references, setReferences] = useState([]);
     const [copiedItems, setCopiedItems] = useState([]);
-    const [selectedStyle, setSelectedStyle] = useState("Harvard");
+    const [selectedStyle, setSelectedStyle] = useState("Chicago");
 
     const getReferencesFromLocalStorage = () => {
         const storedValue = localStorage.getItem("References");
@@ -44,12 +44,12 @@ export default function StackedList() {
         <div id="stackedList">
             <div className="text-center mt-4">
                 <button
-                    onClick={() => setSelectedStyle("Harvard")}
+                    onClick={() => setSelectedStyle("Chicago")}
                     className={`m-1 px-4 py-2 text-sm font-medium ${
-                        selectedStyle === "Harvard" ? "text-white bg-green-500" : "text-gray-500 bg-gray-200"
+                        selectedStyle === "Chicago" ? "text-white bg-green-500" : "text-gray-500 bg-gray-200"
                     } rounded-md focus:outline-none hover:bg-green-300 hover:text-black`}
                 >
-                    Harvard
+                    Chicago
                 </button>
                 <button
                     onClick={() => setSelectedStyle("APA")}
