@@ -24,7 +24,7 @@ export default function BackgroundComponent({ children }) {
     return (
         <>
             <div className="min-h-full">
-                <Disclosure as="nav" className="bg-teal-500 text-purple-100">
+                <Disclosure as="nav" className="bg-teal-500 text-black-100">
                     {({ open }) => (
                         <>
                             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -41,8 +41,8 @@ export default function BackgroundComponent({ children }) {
                                                         onClick={() => navigate(item.href)}
                                                         className={classNames(
                                                             item.current
-                                                                ? "bg-teal-700 text-purple-500"
-                                                                : "text-gray-300 hover:bg-teal-700 hover:text-purple-500",
+                                                                ? "bg-teal-200 text-purple-500"
+                                                                : "text-white-1000 hover:bg-teal-700 hover:text-purple-500",
                                                             "rounded-md px-3 py-2 text-sm font-medium"
                                                         )}
                                                         aria-current={item.current ? "page" : undefined}
