@@ -104,11 +104,12 @@ export default function SearchComponent() {
 
     useEffect(() => {
         console.log(`trying to load data`);
-        if (selectedReferenceType === "Research Paper" && searchResults && typeof searchResults.title === "string") {
+        if (selectedReferenceType === "Research Paper" && searchResults) {
             const result = searchResults[0]
+            console.log(result)
             setFormData({
                 title: result["title"],
-                authorLast: result["authors"][0]["name"].pop(),
+                authorLast: result["authors"][0]["name"].split(" ").pop(),
                 authorFirst: result["authors"][0]["name"].split(" ")[0][0],
                 authorInitial: "",
                 websiteAddress: result["url"],
@@ -128,25 +129,13 @@ export default function SearchComponent() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectedReferenceType]);
 
+    const initialFormData = {};
+
     const handleSave = () => {
         addObject(formData);
+        setFormData(initialFormData);
     };
-    let sourceComponent;
-    switch (selectedReferenceType) {
-        case "Website":
-            sourceComponent = (
-                <WebsiteComponent searchQuery={searchQuery} searchFilter={searchFilter} searchResults={searchResults} onSearch={handleSearch} />
-            );
-            break;
-        case "Research Paper":
-            sourceComponent = <ResearchPaperComponent searchQuery={searchQuery} searchResults={searchResults} onSearch={handleSearch} />;
-            break;
-        case "Book":
-            sourceComponent = <BookComponent searchQuery={searchQuery} searchResults={searchResults} onSearch={handleSearch} />;
-            break;
-        default:
-            sourceComponent = null;
-    }
+
     return (
         <div id="searchComponent">
             <form className="flex items-center justify-center">
@@ -206,7 +195,6 @@ export default function SearchComponent() {
                             >
                                 {loading ? "Loading..." : "Search"}
                             </button>
-                            <div className="mt-2">{sourceComponent}</div>
                         </div>
                     </div>
                 </div>
@@ -322,7 +310,7 @@ export default function SearchComponent() {
                             </div>
                         </div>
                         <div className="mt-4 flex items-center justify-center gap-x-6">
-                            <button type="button" className="text-sm font-semibold leading-6 text-gray-900">
+                            <button type="button" className="text-sm font-semibold leading-6 text-gray-900" onClick={()=> setFormData({})}>
                                 Cancel
                             </button>
                             <button

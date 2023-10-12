@@ -3,19 +3,46 @@ import { useState } from "react";
 import bookIcon from "../../assets/icons/book.png";
 import paperIcon from "../../assets/icons/paper.png";
 import websiteIcon from "../../assets/icons/website.png";
+import formatReference from "./ReferenceFormatterComponent";
 
-
-export default function ReferencesComponent({ references, selectedStyle }) {
+export default function ReferencesComponent({ references, selectedStyle, reference }) {
     const [copiedItems, setCopiedItems] = useState(Array(references.length).fill(false));
 
     const handleCopyClick = (index) => {
-        navigator.clipboard.writeText(JSON.stringify(references[index], null, 4));
-        setCopiedItems((prevCopiedItems) => {
-            const updatedCopiedItems = [...prevCopiedItems];
-            updatedCopiedItems[index] = true;
-            return updatedCopiedItems;
-        });
+        const reference = references[index];
+        const formattedString = formatReference(reference, selectedStyle);
+
+        // Create a temporary element, set its HTML content, and copy the text representation
+        const tempElement = document.createElement("div");
+        tempElement.innerHTML = formattedString;
+        const textToCopy = tempElement.innerText;
+
+        navigator.clipboard
+            .writeText(textToCopy)
+            .then(() => {
+                // Mark the reference as copied
+                setCopiedItems((prevCopiedItems) => {
+                    const updatedCopiedItems = [...prevCopiedItems];
+                    updatedCopiedItems[index] = true;
+                    return updatedCopiedItems;
+                });
+
+              
+                setTimeout(() => {
+                    setCopiedItems((prevCopiedItems) => {
+                        const updatedCopiedItems = [...prevCopiedItems];
+                        updatedCopiedItems[index] = false;
+                        return updatedCopiedItems;
+                    });
+                }, 2000);
+            })
+            .catch((error) => {
+                // Handle clipboard write error, e.g., by showing a message to the user
+                console.error("Failed to copy to clipboard: ", error);
+            });
     };
+
+    
 
     const handleRemoveClick = (index) => {
         // Create a copy of the references array without the item to be removed
@@ -52,8 +79,13 @@ export default function ReferencesComponent({ references, selectedStyle }) {
                     /* Last Name, Initials. <i>Title</i>. Publisher. Year. */
                     <>
                         <p className="mx-0.5 mt-1 text-xs text-gray-800">
-                            {reference.authorLast}, {reference.authorFirst[0]}. {reference.authorInitial} <i>{reference.title}</i>.{" "}
-                            {reference.publisher}. {reference.year}. {reference.websiteAddress}
+                            {reference.authorLast && `${reference.authorLast}, `}
+                            {reference.authorFirst && `${reference.authorFirst[0]}. `}
+                            {reference.authorInitial && `${reference.authorInitial}. `}
+                            <i>{reference.title && `${reference.title}. `}</i>
+                            {reference.publisher && `${reference.publisher}. `}
+                            {reference.year && `${reference.year}. `}
+                            {`${reference.websiteAddress}`}
                         </p>
                     </>
                 );
@@ -62,8 +94,13 @@ export default function ReferencesComponent({ references, selectedStyle }) {
                     /* Last Name, First Initial. Middle Initial. (Year of Publication). Title of the book: Subtitle of the book. Publisher. */
                     <>
                         <p className="mt-1 text-xs text-gray-800">
-                            {reference.authorLast}, {reference.authorFirst[0]}. {reference.authorInitial}. ({reference.year}). {reference.title}.{" "}
-                            {reference.publisher}. {reference.websiteAddress}
+                            {reference.authorLast && `${reference.authorLast}, `}
+                            {reference.authorFirst && `${reference.authorFirst[0]}. `}
+                            {reference.authorInitial && `${reference.authorInitial}. `}
+                            {reference.year && `(${reference.year}). `}
+                            {reference.title && `${reference.title}. `}
+                            {reference.publisher && `${reference.publisher}. `}
+                            {`${reference.websiteAddress}`}
                         </p>
                     </>
                 );
@@ -72,8 +109,13 @@ export default function ReferencesComponent({ references, selectedStyle }) {
                     /* Last Name, First Initial. Middle Initial. Title of the Book. Publisher, Year of Publication. */
                     <>
                         <p className="mt-1 text-xs text-gray-800">
-                            {reference.authorLast}, {reference.authorFirst[0]}. {reference.authorInitial}. <i>{reference.title}</i>.{" "}
-                            {reference.publisher}. {reference.year}. {reference.websiteAddress}
+                            {reference.authorLast && `${reference.authorLast}, `}
+                            {reference.authorFirst && `${reference.authorFirst[0]}. `}
+                            {reference.authorInitial && `${reference.authorInitial}. `}
+                            {reference.publisher && `${reference.publisher}. `}
+                            {reference.title && `${reference.title}. `}
+                            {reference.year && `${reference.year}. `}
+                            {`${reference.websiteAddress}`}
                         </p>
                     </>
                 );
@@ -82,7 +124,7 @@ export default function ReferencesComponent({ references, selectedStyle }) {
     return (
         <div>
             {references.map((reference, index) => (
-                <li key={index} className="flex flex-wrap justify-between gap-x-6 py-5 mx-5">
+                <li key={index} className="flex flex-wrap justify-center gap-x-6 py-5 mx-5">
                     <div className="flex min-w-0 gap-x-4 items-center">
                         <img className="h-12 w-12 flex-none rounded-lg" src={getSourceIcon(reference.source)} alt={reference.name} />
                         <div className="mx-0.5 min-w-0 flex-auto text-left">

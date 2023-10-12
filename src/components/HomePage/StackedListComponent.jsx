@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import ReferencesComponent from "./ReferencesComponent";
 import ReferenceExampleComponent from "../SearchPage/ReferenceExampleComponent";
+import formatReference from "./ReferenceFormatterComponent";
 
 export default function StackedList() {
     // const [localStorage, setLocalStorage] = useLocalStorage("References", null);
@@ -15,25 +16,31 @@ export default function StackedList() {
     };
 
     useEffect(() => {
-        // Initial retrieval of references
         getReferencesFromLocalStorage();
 
-        // Set up a timer to periodically check for changes in local storage
         const refreshInterval = setInterval(() => {
             getReferencesFromLocalStorage();
-        }, 500); // Adjust the interval as needed (e.g., every 10 seconds)
+        }, 1000);
 
-        // Clear the interval when the component unmounts
         return () => {
             clearInterval(refreshInterval);
         };
     }, []);
 
     const handleCopyAllClick = () => {
-        const allItemsText = JSON.stringify(references, null, 4);
+        // Create a single formatted text that includes all your references
+        const allItemsText = references
+            .map((reference) => {
+                const formattedString = formatReference(reference, selectedStyle); // You can use your existing formatReference function here
+                return formattedString;
+            })
+            .join("\n\n"); // Separate each reference with a double newline
+
         navigator.clipboard.writeText(allItemsText);
+        // Mark all items as copied
         setCopiedItems(Array(references.length).fill(true));
     };
+
 
     const handleDeleteAllClick = () => {
         localStorage.removeItem("References");
