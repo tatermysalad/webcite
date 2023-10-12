@@ -1,18 +1,25 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { ApiContext } from "../contexts/ApiContext";
 import useLocalStorage from "../hooks/useLocalStorage";
+import useApiSearch from "./ApiFunctionComponent";
+import WebsiteComponent from "./ApiDisplay/WebsiteComponent";
+import ResearchPaperComponent from "./ApiDisplay/ResearchPaperComponent";
+import BookComponent from "./ApiDisplay/BookComponent";
 
 export default function SearchComponent() {
+    // eslint-disable-next-line no-unused-vars
     const { websiteApi, setWebsiteApi, researchApi, setResearchApi, bookApi, setBookApi } = useContext(ApiContext);
+    const { searchBook, searchResearchPaper, searchWebsite } = useApiSearch();
 
     const [localStorage, setLocalStorage] = useLocalStorage("References", []);
 
     const [selectedReferenceType, setSelectedReferenceType] = useState("Website");
     const [searchQuery, setSearchQuery] = useState("");
-    const [searchResults, setSearchResults] = useState({});
+    const [searchResults, setSearchResults] = useState([]);
     const [searchFilter, setSearchFilter] = useState("title");
 
-    const [loading, setLoading] = useState(false)
+    const [loading, setLoading] = useState(false);
+    const [selectedBook, setSelectedBook] = useState(null);
 
     const [formData, setFormData] = useState({
         title: "",
@@ -46,64 +53,79 @@ export default function SearchComponent() {
     };
 
     const handleSearch = async (e) => {
-        console.log("searching!");
         e.preventDefault();
         setLoading(true);
-        let apiUrl = "";
-        let headersApi = {}; // Initialize an empty object for headers
-
-        if (selectedReferenceType === "Website") {
-            apiUrl = `${websiteApi}?q=`;
-            headersApi = {
-                "X-Linkpreview-Api-Key": import.meta.env.VITE_WEBSITE_API_KEY,
-            };
-        } else if (selectedReferenceType === "Research Paper") {
-            apiUrl = `${researchApi}search/bulk?query=`;
-        } else if (selectedReferenceType === "Book") {
-            apiUrl = `${bookApi}search.json?q=`;
-
-            if (searchFilter === "title") {
-                apiUrl = `${bookApi}search.json?title=`;
-            } else if (searchFilter === "author") {
-                apiUrl = `${bookApi}search.json?author=`;
-            }
-
-        }
-
         if (searchQuery !== "") {
-            const requestOptions = {
-                method: "GET", 
-                headers: headersApi, 
-                mode: "cors",
-            };
-            let searchQ = searchQuery.replace(/ /g, "%20");
-            console.log(apiUrl + searchQ, requestOptions);
-            let response = await fetch(apiUrl + searchQ, requestOptions);
-
-            let responseData = await response.json();
-            console.log(responseData);
-            setSearchResults(responseData);
-        }
-
-        if (searchResults) {
-            const { title, author, url, publisher, year } = searchResults;
-            setFormData({
-                title,
-                author,
-                websiteAddress: url,
-                publisher,
-                year,
-                source: selectedReferenceType,
-            });
+            if (selectedReferenceType === "Book") {
+                let responseData = await searchBook(searchQuery);
+                console.log(`relevant data is loaded:`);
+                console.log(responseData.docs);
+                setSearchResults(responseData.docs);
+            } else if (selectedReferenceType === "Research Paper") {
+                let responseData = await searchResearchPaper(searchQuery);
+                console.log(`relevant data is loaded:`);
+                console.log(responseData.data.slice(0, 3));
+                setSearchResults(responseData.data.slice(0, 3));
+            } else if (selectedReferenceType === "Website") {
+                let responseData = await searchWebsite(searchQuery, searchFilter);
+                console.log(responseData);
+                setSearchResults(responseData);
+            }
         } else {
             alert("Please enter some data to search");
         }
-        setLoading(false)
+        setLoading(false);
     };
+
+    useEffect(() => {
+        console.log(`trying`);
+        const { title, author, url, publisher, year } = searchResults;
+        setFormData({
+            title: title,
+            author: author,
+            websiteAddress: url,
+            publisher: publisher,
+            year: year,
+            source: selectedReferenceType,
+        });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [searchResults]);
+
+    useEffect(() => {
+        formData["source"] = selectedReferenceType;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [selectedReferenceType]);
+
+    // const handleBookSelect = (book) => {
+    //     setSelectedBook(book);
+    //     setFormData({
+    //         title: book.title,
+    //         author: book.author,
+    //         publisher: book.publisher,
+    //         year: book.publish_year[0],
+    //         source: selectedReferenceType,
+    //     });
+    // };
 
     const handleSave = () => {
         addObject(formData);
     };
+    let sourceComponent;
+    switch (selectedReferenceType) {
+        case "Website":
+            sourceComponent = (
+                <WebsiteComponent searchQuery={searchQuery} searchFilter={searchFilter} searchResults={searchResults} onSearch={handleSearch} />
+            );
+            break;
+        case "Research Paper":
+            sourceComponent = <ResearchPaperComponent searchQuery={searchQuery} searchResults={searchResults} onSearch={handleSearch} />;
+            break;
+        case "Book":
+            sourceComponent = <BookComponent searchQuery={searchQuery} searchResults={searchResults} onSearch={handleSearch} />;
+            break;
+        default:
+            sourceComponent = null;
+    }
     return (
         <div id="searchComponent">
             <form className="flex items-center justify-center">
@@ -163,45 +185,7 @@ export default function SearchComponent() {
                             >
                                 {loading ? "Loading..." : "Search"}
                             </button>
-                            {/* Display search results here */}
-                            <div className="mt-4">
-                                {formData.source === "Website" && (
-                                    <ul>
-                                        {Object.keys(searchResults).map((key, index) => (
-                                            <li key={index}>
-                                                <strong>{key}:</strong> {searchResults[key]}
-                                            </li>
-                                        ))}
-                                    </ul>
-                                )}
-                                {formData.source === "Research Paper" && (
-                                    <ul>
-                                        {searchResults.data.slice(0, 5).map((result, index) => (
-                                            <li key={index}>
-                                                <strong>Title:</strong> {result.title}
-                                            </li>
-                                        ))}
-                                    </ul>
-                                )}
-                                {formData.source === "Book" && searchResults.data && (
-                                    <ul>
-                                        {searchResults.data.slice(0, 5).map((book, index) => (
-                                            <li key={book.key}>
-                                                <strong>Title:</strong> {book.title}
-                                                <br />
-                                                <strong>Author:</strong> {book.contributor ? book.contributor.join(", ") : "N/A"}
-                                                <br />
-                                                <strong>Publisher:</strong> {book.publisher ? book.publisher.join(", ") : "N/A"}
-                                                <br />
-                                                <strong>Year:</strong> {book.publish_date ? book.publish_date[0] : "N/A"}
-                                                <br />
-                                                <strong>ISBN:</strong> {book.isbn ? book.isbn.join(", ") : "N/A"}
-                                                <br />
-                                            </li>
-                                        ))}
-                                    </ul>
-                                )}
-                            </div>
+                            <div className="mt-4">{sourceComponent}</div>
                         </div>
                     </div>
                 </div>

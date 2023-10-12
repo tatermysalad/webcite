@@ -9,6 +9,7 @@ function classNames(...classes) {
     return classes.filter(Boolean).join(" ");
 }
 
+// eslint-disable-next-line react/prop-types
 export default function BackgroundComponent({ children }) {
     const location = useLocation();
     const navigate = useNavigate();
