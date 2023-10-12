@@ -20,7 +20,7 @@ export default function StackedList() {
 
         const refreshInterval = setInterval(() => {
             getReferencesFromLocalStorage();
-        }, 1000);
+        }, 500);
 
         return () => {
             clearInterval(refreshInterval);

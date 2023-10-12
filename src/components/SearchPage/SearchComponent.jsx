@@ -2,9 +2,6 @@ import { useContext, useEffect, useState } from "react";
 import { ApiContext } from "../../contexts/ApiContext";
 import useLocalStorage from "../../hooks/useLocalStorage";
 import useApiSearch from "../ApiSearch/ApiFunctionComponent";
-import WebsiteComponent from "../ApiDisplay/WebsiteComponent";
-import ResearchPaperComponent from "../ApiDisplay/ResearchPaperComponent";
-import BookComponent from "../ApiDisplay/BookComponent";
 
 export default function SearchComponent() {
     // eslint-disable-next-line no-unused-vars
@@ -24,6 +21,7 @@ export default function SearchComponent() {
     const [searchFilter, setSearchFilter] = useState("title");
 
     const [loading, setLoading] = useState(false);
+    const [isSaved, setIsSaved] = useState(false);
 
     const [formData, setFormData] = useState({
         title: "",
@@ -105,8 +103,8 @@ export default function SearchComponent() {
     useEffect(() => {
         console.log(`trying to load data`);
         if (selectedReferenceType === "Research Paper" && searchResults) {
-            const result = searchResults[0]
-            console.log(result)
+            const result = searchResults[0];
+            console.log(result);
             setFormData({
                 title: result["title"],
                 authorLast: result["authors"][0]["name"].split(" ").pop(),
@@ -117,7 +115,7 @@ export default function SearchComponent() {
                 year: result["year"],
                 source: selectedReferenceType,
             });
-            console.log(formData)
+            console.log(formData);
         } else if (selectedReferenceType === "Book" && searchResults) {
             const result = searchResults[0];
             console.log(result);
@@ -141,11 +139,24 @@ export default function SearchComponent() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectedReferenceType]);
 
-    const initialFormData = {};
-
+    const initialFormData = {
+        title: "",
+        authorLast: "",
+        authorFirst: "",
+        authorInitial: "",
+        websiteAddress: "",
+        publisher: "",
+        year: "",
+        source: selectedReferenceType,
+    };
     const handleSave = () => {
         addObject(formData);
         setFormData(initialFormData);
+        setIsSaved(true);
+
+        setTimeout(() => {
+            setIsSaved(false);
+        }, 10000);
     };
 
     return (
@@ -322,8 +333,12 @@ export default function SearchComponent() {
                             </div>
                         </div>
                         <div className="mt-4 flex items-center justify-center gap-x-6">
-                            <button type="button" className="text-sm font-semibold leading-6 text-gray-900" onClick={()=> setFormData({})}>
-                                Cancel
+                            <button
+                                type="button"
+                                className="text-sm font-semibold leading-6 text-gray-900"
+                                onClick={() => setFormData(initialFormData)}
+                            >
+                                Clear
                             </button>
                             <button
                                 type="button"
@@ -333,6 +348,7 @@ export default function SearchComponent() {
                                 Save
                             </button>
                         </div>
+                        {isSaved ? <div className="text-green-600 mt-2">Reference saved successfully!</div> : <></>}
                     </div>
                 </div>
             </form>
