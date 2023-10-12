@@ -4,7 +4,6 @@ import ReferenceExampleComponent from "../SearchPage/ReferenceExampleComponent";
 import formatReference from "./ReferenceFormatterComponent";
 
 export default function StackedList() {
-    // const [localStorage, setLocalStorage] = useLocalStorage("References", null);
     const [references, setReferences] = useState([]);
     const [copiedItems, setCopiedItems] = useState([]);
     const [selectedStyle, setSelectedStyle] = useState("Chicago");
@@ -40,7 +39,6 @@ export default function StackedList() {
         // Mark all items as copied
         setCopiedItems(Array(references.length).fill(true));
     };
-
 
     const handleDeleteAllClick = () => {
         localStorage.removeItem("References");
@@ -79,29 +77,33 @@ export default function StackedList() {
                 <ReferenceExampleComponent selectedStyle={selectedStyle} />
             </div>
             <div className="flex items-center justify-center">
-                {references && (
+                {references && references.length > 0 && (
                     <ul role="list" className="divide-y divide-gray-100">
                         <ReferencesComponent references={references} selectedStyle={selectedStyle} />
                     </ul>
                 )}
             </div>
             <div className="flex items-center justify-center">
-                <span className="text-center mt-4">
-                    <button
-                        onClick={handleDeleteAllClick}
-                        className="m-1 px-4 py-2 text-sm font-medium text-white bg-red-500 rounded-md focus:outline-none hover-bg-red-600"
-                    >
-                        Delete All
-                    </button>
-                </span>
-                <span className="text-center mt-4">
-                    <button
-                        onClick={handleCopyAllClick}
-                        className="m-1 px-4 py-2 text-sm font-medium text-white bg-purple-500 rounded-md focus:outline-none hover:bg-purple-600"
-                    >
-                        Copy All
-                    </button>
-                </span>
+                {references && references.length > 1 && (
+                    <span className="text-center mt-4">
+                        <button
+                            onClick={handleDeleteAllClick}
+                            className="m-1 px-4 py-2 text-sm font-medium text-white bg-red-500 rounded-md focus:outline-none hover-bg-red-600"
+                        >
+                            Delete All
+                        </button>
+                    </span>
+                )}
+                {references && references.length > 1 && (
+                    <span className="text-center mt-4">
+                        <button
+                            onClick={handleCopyAllClick}
+                            className="m-1 px-4 py-2 text-sm font-medium text-white bg-purple-500 rounded-md focus:outline-none hover:bg-purple-600"
+                        >
+                            Copy All
+                        </button>
+                    </span>
+                )}
             </div>
         </div>
     );
