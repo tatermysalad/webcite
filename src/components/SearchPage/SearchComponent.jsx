@@ -124,7 +124,7 @@ export default function SearchComponent() {
                 authorLast: result["author_name"][0].split(" ").pop(),
                 authorFirst: result["author_name"][0].split(" ")[0],
                 authorInitial: "",
-                websiteAddress: result["url"],
+                websiteAddress: "",
                 publisher: result["publisher"][0],
                 year: result["first_publish_year"],
                 source: selectedReferenceType,
