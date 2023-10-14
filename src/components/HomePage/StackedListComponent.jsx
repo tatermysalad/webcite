@@ -27,16 +27,14 @@ export default function StackedList() {
     }, []);
 
     const handleCopyAllClick = () => {
-        // Create a single formatted text that includes all your references
         const allItemsText = references
             .map((reference) => {
-                const formattedString = formatReference(reference, selectedStyle); // You can use your existing formatReference function here
+                const formattedString = formatReference(reference, selectedStyle); 
                 return formattedString;
             })
-            .join("\n\n"); // Separate each reference with a double newline
+            .join("\n\n");
 
         navigator.clipboard.writeText(allItemsText);
-        // Mark all items as copied
         setCopiedItems(Array(references.length).fill(true));
     };
 

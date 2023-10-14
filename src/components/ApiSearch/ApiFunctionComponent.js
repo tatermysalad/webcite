@@ -33,7 +33,7 @@ export default function useApiSearch() {
         return responseData;
     };
 
-    // Function to search for a Book reference
+
     const searchBook = async (searchQuery, searchFilter) => {
         const extraQuery = "?limit=1&fields=title,publisher,first_publish_year,author_name";
         let apiUrl = `${bookApi}search.json${extraQuery}&q=`;

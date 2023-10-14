@@ -12,7 +12,6 @@ export default function ReferencesComponent({ references, selectedStyle, referen
         const reference = references[index];
         const formattedString = formatReference(reference, selectedStyle);
 
-        // Create a temporary element, set its HTML content, and copy the text representation
         const tempElement = document.createElement("div");
         tempElement.innerHTML = formattedString;
         const textToCopy = tempElement.innerText;
@@ -20,7 +19,6 @@ export default function ReferencesComponent({ references, selectedStyle, referen
         navigator.clipboard
             .writeText(textToCopy)
             .then(() => {
-                // Mark the reference as copied
                 setCopiedItems((prevCopiedItems) => {
                     const updatedCopiedItems = [...prevCopiedItems];
                     updatedCopiedItems[index] = true;
@@ -37,7 +35,6 @@ export default function ReferencesComponent({ references, selectedStyle, referen
                 }, 2000);
             })
             .catch((error) => {
-                // Handle clipboard write error, e.g., by showing a message to the user
                 console.error("Failed to copy to clipboard: ", error);
             });
     };
@@ -45,18 +42,13 @@ export default function ReferencesComponent({ references, selectedStyle, referen
     
 
     const handleRemoveClick = (index) => {
-        // Create a copy of the references array without the item to be removed
         const updatedReferences = [...references];
         updatedReferences.splice(index, 1);
-
-        // Update the state
         setCopiedItems((prevCopiedItems) => {
             const updatedCopiedItems = [...prevCopiedItems];
             updatedCopiedItems.splice(index, 1);
             return updatedCopiedItems;
         });
-
-        // Save the updated references array in local storage
         localStorage.setItem("References", JSON.stringify(updatedReferences));
     };
 
