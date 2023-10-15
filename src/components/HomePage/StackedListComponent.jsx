@@ -44,7 +44,7 @@ export default function StackedList() {
     };
 
     return (
-        <div id="stackedList">
+        <div id="stackedList" className="break-all">
             <div className="text-center mt-4">
                 <button
                     onClick={() => setSelectedStyle("Chicago")}
@@ -74,7 +74,7 @@ export default function StackedList() {
             <div className="flex justify-center text-left">
                 <ReferenceExampleComponent selectedStyle={selectedStyle} />
             </div>
-            <div className="flex items-center justify-center">
+            <div id="referenceComponentList" className="flex items-center justify-center">
                 {references && references.length > 0 && (
                     <ul role="list" className="divide-y divide-gray-100">
                         <ReferencesComponent references={references} selectedStyle={selectedStyle} />
