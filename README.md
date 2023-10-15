@@ -1,6 +1,6 @@
 <img src="./src/assets/logo-package/png/logo-white.png" alt="webCite" width="200"/>
 
-[Link to the deployed site](https://webcite.netlify.app/)
+[Link to the deployed site](https://webcite.vercel.app/)
 # webCite
 
 WebCite is a versatile reference management app designed to streamline the process of citing online sources. Leveraging three separate API providers and JavaScript react, WebCite offers users a comprehensive solution for creating citations in various styles.
